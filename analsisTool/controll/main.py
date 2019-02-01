@@ -2,7 +2,7 @@ import controll.ExcelDataHandling as EDH
 import controll.ExcelDataAnalsis as EDA
 import pandas as pd
 
-handlingData = EDH.ExcleDataHandling("trade_history_473953.csv",0.001).dataSetting()
+handlingData = EDH.ExcleDataHandling("trade_history_473953 (2).csv",0.00015).dataSetting()
 
 if handlingData != 1:
     # df = pd.DataFrame(handlingData)

@@ -7,25 +7,40 @@ class ExcleDataAnasis:
         self.handlingData = handlingData
 
     def totalProfit(self,startMoney):
-        # tradeData = {}
-        df = pd.DataFrame(self.handlingData)
+
+        tradeData = {}  #set dictionary정의
         i = 0
+
+        df = pd.DataFrame(self.handlingData)
+
         for row in df.itertuples():
-            # print(f'현재금액 {startMoney}')
+            print(f'현재금액 {startMoney}')
             i += 1
             if row[3] == "매수":
+                if tradeData.get(row[2]) == None:
+                    tradeData[row[2]] = row[8]
+                else:
+                    tradeData[row[2]] = tradeData[row[2]] + row[8]
+
                 startMoney -= row[8] #총 매수금액
-                startMoney -= row[9] #거래 수수료
+                startMoney -= row[9] #증권사 수수료
                 print(f'매수 = 금액 : {row[8]}, 수수료 : {row[9]}')
 
             elif row[3] == "매도":
+                if row[10] == 0:
+                    del tradeData[row[2]]
+                else:
+                    tradeData[row[2]] = tradeData[row[2]] - row[8]
+
                 startMoney += row[8] #총 매도금액
-                startMoney -= row[9] #거래 수수료
+                startMoney -= row[9] #증권사 수수료
+                startMoney -= int(float(row[8] * 0.003))    #거래수수료
                 print(f'매도 = 금액 : {row[8]}, 수수료 : {row[9]}')
-
-
-        print(self.handlingData["remainingQuantity"])
+            print(row)
+        print(startMoney)
         print(i)
+        for row in tradeData:
+            startMoney += tradeData.get(row)
         return startMoney
 
 # def profitLoss(self):

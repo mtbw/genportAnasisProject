@@ -42,6 +42,8 @@ class ExcleDataAnasis:
         newHigh = 0
         #전고점 변수 선언.
         preHigh = 0
+        preHighAssets = startMoney
+        newHighAssets = startMoney
         #이전 자산 총합.
         preTotal = startMoney
 
@@ -96,6 +98,7 @@ class ExcleDataAnasis:
             if cumulative > newHigh:
                 #신고점 돌파시!
                 newHigh = cumulative
+                newHighAssets = totalAssets
                 newHighCheck = 1
             else:
                 #돌파하지 않을경우.
@@ -106,7 +109,8 @@ class ExcleDataAnasis:
             if newHighCheck == 1 :#신고점 돌파.
                 MDD = 0
             else :      #돌파하지 못함.
-                MDD = cumulative - newHigh
+                # MDD = cumulative - newHigh
+                MDD = ((totalAssets - newHighAssets) / totalAssets) * 100
 
             # MDD 입력.
             datas_dict[category[5]].append(MDD)
@@ -121,6 +125,7 @@ class ExcleDataAnasis:
             if preTotal <= totalAssets:
                 #이전 자산보다 현재자산이 높을때.
                 preHigh = cumulative
+                preHighAssets = totalAssets
                 preHighCkeck = 1
             else :
                 preHighCkeck = 0
@@ -133,7 +138,8 @@ class ExcleDataAnasis:
             if preHighCkeck == 1:  # 전고점 돌파.
                 preMDD = 0
             else:  # 돌파하지 못함.
-                preMDD = cumulative - preHigh
+                # preMDD = cumulative - preHigh ## MDD 계산은 상대수익률에서 계산하는 것이 아니라 절대평가인 총자산에서 이루어져야한다.
+                preMDD = ((totalAssets - preHighAssets) / totalAssets) * 100
 
             # MDD 입력.
             datas_dict[category[7]].append(preMDD)
@@ -145,31 +151,52 @@ class ExcleDataAnasis:
         # print(datas_dict)
 
         #test
-        plt.title('[gen port] trade_history Analsis')
+        # plt.title('[gen port] trade_history Analsis')
+        # plt.xlabel('[day time]')
+        # plt.ylabel('[Cumulative return]')
+        # plt.xticks([0, 1671], ['20170102', '20190214'])
+        #
+        # plt.plot(datas_dict["cumulative"])
+        # plt.plot(datas_dict["newHigh"])
+        # plt.plot(datas_dict["MDD"])
+        # plt.plot(datas_dict["preHigh"])
+        # plt.plot(datas_dict["preMDD"])
+        # plt.legend(["cumulative","newHigh","newMDD","preHigh","preMDD"])
+        ##
+        plt.subplot(2,1,1)
+        plt.plot(datas_dict["cumulative"], color='#1F77B4')
+        plt.plot(datas_dict["newHigh"],color='#FF8D29')
+        plt.plot(datas_dict["preHigh"],color='#DA3F40')
         plt.xlabel('[day time]')
         plt.ylabel('[Cumulative return]')
-        plt.xticks([0, 824], ['20170102', '20190201'])
+        plt.legend(["cumulative","newHigh","preHigh"])
+        plt.title('[gen port] trade_history Analsis_cumulative')
 
-        plt.plot(datas_dict["cumulative"])
-        plt.plot(datas_dict["newHigh"])
-        plt.plot(datas_dict["MDD"])
-        plt.plot(datas_dict["preHigh"])
-        plt.plot(datas_dict["preMDD"])
-        plt.legend(["cumulative","newHigh","newMDD","preHigh","preMDD"])
-        plt.savefig('genport.png')
+        plt.subplot(2, 1, 2)
+        plt.plot(datas_dict["MDD"],color='#FF8D29')
+        plt.plot(datas_dict["preMDD"],color='#DA3F40')
+        plt.xlabel('[day time]')
+        plt.ylabel('[MDD]')
+        plt.legend(["MDD","preMDD"])
+        plt.title('[gen port] trade_history Analsis_MDD')
+
+        plt.tight_layout()
+        ###
+        plt.savefig('genport.svg')
         plt.show()
 
         #df + datas_dict
         datas = pd.DataFrame(datas_dict)
         df = df.join(datas)
-
+        print(tradeCount)
 
         # print(df)
 
 
-        errorRate = ((39166043 - totalAssets) / 39166043) * 100
-        print(f'39166043원 <=%=> {totalAssets} ==> 오차율 {errorRate}%')
+        errorRate = ((125844786 - totalAssets) / 125844786) * 100
+        print(f'125,844,786원 <=%=> {totalAssets} ==> 오차율 {errorRate}%')
         print(f'maxMDD : {maxMDD}')
         print(f'preMaxMDD : {maxPreMDD}')
+
 
         return df

@@ -3,7 +3,7 @@ import controll.ExcelDataAnalsis as EDA
 import pandas as pd
 
 # handlingData = EDH.ExcleDataHandling("trade_history_473953.csv",0.00015).dataSetting()
-handlingData = EDH.ExcleDataHandling("trade_history_484971.csv",0.00015).dataSetting()
+handlingData = EDH.ExcleDataHandling("trade_history_532711.csv",0.00015).dataSetting()
 
 
 

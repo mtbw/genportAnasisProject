@@ -193,8 +193,8 @@ class ExcleDataAnasis:
         # print(df)
 
 
-        errorRate = ((125844786 - totalAssets) / 125844786) * 100
-        print(f'125,844,786원 <=%=> {totalAssets} ==> 오차율 {errorRate}%')
+        errorRate = ((39268519 - totalAssets) / 39268519) * 100
+        print(f'29,268,519원 <=%=> {totalAssets} ==> 오차율 {errorRate}%')
         print(f'maxMDD : {maxMDD}')
         print(f'preMaxMDD : {maxPreMDD}')
 

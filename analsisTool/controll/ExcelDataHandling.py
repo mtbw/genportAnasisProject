@@ -48,11 +48,11 @@ class ExcleDataHandling:
                         datas_dict[categorys].append(line[i])
                     elif i == 7 :
                         #매매 가격 * 수량
-                        transactionPrice = int(line[3]) * int(float(line[4]))
+                        transactionPrice = int(float(line[3])) * int(float(line[4]))
                         datas_dict[categorys].append(transactionPrice)
                     elif i == 8 :
                         #거래금액 * 수수료 퍼센트
-                        fee = (float(int(line[3]) * int(float(line[4])) * self.fee))
+                        fee = (int(float(line[3]) * int(float(line[4])) * self.fee))
                         datas_dict[categorys].append(fee)
                     elif i == 9 :
                         #dictionary 자료구조로 남은 보유 수량 검사
